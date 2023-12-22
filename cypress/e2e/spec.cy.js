@@ -71,6 +71,15 @@ describe('template spec', () => {
     cy.get('.chkAgree').check();
     cy.contains('Proceed').click();
     cy.contains('Thank you, your order has been placed successfully').should('exist')
+  })
+
+  it('US-3', () => {
+    const search_engine = cy.get('.search-keyword')
+    search_engine.type('cucumber')
+    cy.contains('Cucumber - 1 Kg').should('exist')
+    search_engine.clear()
+    search_engine.type('beetroot')
+    cy.contains('Beetroot - 1 Kg').should('exist')
 
   })
 })
