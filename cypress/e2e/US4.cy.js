@@ -1,9 +1,10 @@
-describe('User Story 3. Search for Products', () => {
+describe('User Story 4. Top Deals', () => {
     beforeEach(() => {
         cy.visit('https://rahulshettyacademy.com/seleniumPractise/#/')
       })
     it('searches for products', () => {
         cy.get('.search-keyword').type('cucumber')
-        cy.contains('Cucumber').should('be.visible')
+        cy.get('.search-button').click()
     })
+
 })
