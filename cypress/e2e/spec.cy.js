@@ -41,12 +41,37 @@ describe('template spec', () => {
   it("US-2", () =>{
 
     cy.get('@addToCartButton3').click();
-    cy.get('@quantityInput20').clear().type('3'); //testing to see if that's right
+    cy.get('@quantityInput20').clear().type('3'); 
+    cy.get('@addToCartButton20').click()
     cy.get('@decrementLink20').click();
     cy.get('@incrementLink21').click();
-    cy.get(".cart-icon").click()
-    // cy.get("PROCCEED TO CHECKOUT").click()
-    // cy.get("productCartTables").children().length()
+    cy.get(".cart-icon").click();
+    cy.contains("PROCEED TO CHECKOUT").click();
+    cy.get("tbody").then(($list) => {
+      const num = $list.children().length;
+      
+      const text = cy.contains('No. of Items').parent().then(($parent) =>{
+        const x = $parent.text()
+        const inputString = "ApplyNo. of Items : 2 Total Amount : 273 Discount : 0% Total After Discount : 273 Place Order";
+
+        // Define a regular expression pattern to capture the desired values
+        const regexPattern = /No\. of Items : (\d+) Total Amount : (\d+) Discount : (\d+%?) Total After Discount : (\d+) Place Order/;
+        const match = regexPattern.exec(inputString);
+        const numberOfItems = match[1];
+        const totalAmount = match[2];
+        const discount = match[3];
+        const totalAfterDiscount = match[4];
+        cy.wrap(num.toString()).should('eq', numberOfItems)
+        cy.log(x)
+      })
+
+    });
+    cy.contains('Place Order').click();
+    cy.contains('Select').parent().select('Albania');
+    cy.get('.chkAgree').check();
+    cy.contains('Proceed').click();
+    cy.contains('Thank you, your order has been placed successfully').should('exist')
+
   })
 })
 
